@@ -1,6 +1,6 @@
 package com.nkrasnovoronka.gamebuddyweb.mapper;
 
-import com.nkrasnovoronka.gamebuddyweb.dto.GenreDTO;
+import com.nkrasnovoronka.gamebuddyweb.dto.genre.GenreDTO;
 import com.nkrasnovoronka.gamebuddyweb.model.Genre;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

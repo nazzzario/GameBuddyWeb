@@ -1,6 +1,6 @@
 package com.nkrasnovoronka.gamebuddyweb.controller;
 
-import com.nkrasnovoronka.gamebuddyweb.dto.GenreDTO;
+import com.nkrasnovoronka.gamebuddyweb.dto.genre.GenreDTO;
 import com.nkrasnovoronka.gamebuddyweb.mapper.GenreMapper;
 import com.nkrasnovoronka.gamebuddyweb.model.Genre;
 import com.nkrasnovoronka.gamebuddyweb.service.GenreService;

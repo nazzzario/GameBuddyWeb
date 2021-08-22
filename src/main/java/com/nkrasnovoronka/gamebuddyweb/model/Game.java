@@ -1,5 +1,6 @@
 package com.nkrasnovoronka.gamebuddyweb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ public class Game extends BaseEntity {
     private String gameLogo;
 
     @OneToOne(mappedBy = "game", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Lobby lobby;
 
     @Column(name = "max_players")
@@ -24,6 +26,7 @@ public class Game extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "genre_id", nullable = false)
+    @JsonIgnore
     private Genre genre;
 
 

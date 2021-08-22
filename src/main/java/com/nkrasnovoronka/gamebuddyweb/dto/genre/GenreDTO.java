@@ -1,4 +1,4 @@
-package com.nkrasnovoronka.gamebuddyweb.dto;
+package com.nkrasnovoronka.gamebuddyweb.dto.genre;
 
 import lombok.Getter;
 import lombok.Setter;
