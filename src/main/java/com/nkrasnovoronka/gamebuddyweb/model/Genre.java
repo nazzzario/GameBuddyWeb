@@ -1,9 +1,11 @@
 package com.nkrasnovoronka.gamebuddyweb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,18 +13,20 @@ import java.util.Set;
 @Table(name = "genres")
 @Getter
 @Setter
-public class Genre extends BaseEntity{
+public class Genre extends BaseEntity {
     @Column(unique = true, name = "genre_name", nullable = false)
+    @NotBlank(message = "Genre name cannot be blank")
     private String genreName;
 
     @OneToMany(mappedBy = "genre", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Game> games;
 
     public Genre() {
         games = new HashSet<>();
     }
 
-    public void addGameToGenre(Game game){
+    public void addGameToGenre(Game game) {
         games.add(game);
         game.setGenre(this);
     }
