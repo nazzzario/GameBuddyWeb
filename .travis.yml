@@ -6,7 +6,11 @@ jdk:
 services:
   - postgresql
 
+before_script:
+  - psql -c "CREATE USER root WITH PASSWORD 'root';" -U postgres
+
 script: ./mvnw clean install
+
 
 notifications:
   email: nazzzario23@gmail.com
