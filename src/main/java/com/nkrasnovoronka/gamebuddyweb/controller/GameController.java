@@ -9,6 +9,7 @@ import com.nkrasnovoronka.gamebuddyweb.service.GameService;
 import com.nkrasnovoronka.gamebuddyweb.service.GenreService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,12 +26,13 @@ public class GameController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Game getGame(@PathVariable Long id) {
-        return gameService.get(id);
+    public ResponseGame getGame(@PathVariable Long id) {
+        return gameMapper.entityToResponse(gameService.get(id));
     }
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<ResponseGame> getAllGame() {
         return gameService.getAll()
                 .stream()
@@ -38,7 +40,7 @@ public class GameController {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseGame create(@RequestBody @Valid RequestGame requestGame) {
         Game game = gameMapper.requestGameToEntity(requestGame);
@@ -72,3 +74,4 @@ public class GameController {
                 .collect(Collectors.toList());
     }
 }
+ 

@@ -1,6 +1,8 @@
-package com.nkrasnovoronka.gamebuddyweb.model;
+package com.nkrasnovoronka.gamebuddyweb.model.user;
 
 
+import com.nkrasnovoronka.gamebuddyweb.model.BaseEntity;
+import com.nkrasnovoronka.gamebuddyweb.model.Lobby;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +34,13 @@ public class User extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "lobby_id")
     )
     private Set<Lobby> joinedLobbies;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_status")
+    private Status userStatus;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Role role;
 
     public User() {
         createdLobbies = new HashSet<>();

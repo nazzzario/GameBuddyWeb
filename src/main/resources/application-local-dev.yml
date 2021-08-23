@@ -4,3 +4,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/game_buddy
     username: root
     password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate

@@ -1,6 +1,5 @@
 package com.nkrasnovoronka.gamebuddyweb.service.impl;
 
-import com.nkrasnovoronka.gamebuddyweb.model.Game;
 import com.nkrasnovoronka.gamebuddyweb.model.Genre;
 import com.nkrasnovoronka.gamebuddyweb.repository.GenreRepository;
 import com.nkrasnovoronka.gamebuddyweb.service.GenreService;

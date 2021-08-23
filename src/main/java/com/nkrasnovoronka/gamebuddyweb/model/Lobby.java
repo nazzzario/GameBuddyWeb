@@ -1,6 +1,7 @@
 package com.nkrasnovoronka.gamebuddyweb.model;
 
 
+import com.nkrasnovoronka.gamebuddyweb.model.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
