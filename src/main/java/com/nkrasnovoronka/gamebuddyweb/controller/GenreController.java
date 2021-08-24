@@ -6,6 +6,7 @@ import com.nkrasnovoronka.gamebuddyweb.model.Genre;
 import com.nkrasnovoronka.gamebuddyweb.service.GenreService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class GenreController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Genre create(@RequestBody @Valid GenreDTO genreDto) {
         Genre genre = genreMapper.toEntity(genreDto);
         return genreService.create(genre);
@@ -39,12 +41,14 @@ public class GenreController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void delete(@PathVariable Long id) {
         genreService.delete(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void update(@PathVariable Long id, @RequestBody @Valid GenreDTO genreDto) {
         Genre genre = genreMapper.toEntity(genreDto);
         genreService.update(id, genre);

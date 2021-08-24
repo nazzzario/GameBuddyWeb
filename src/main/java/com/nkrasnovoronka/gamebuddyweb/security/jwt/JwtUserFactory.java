@@ -12,7 +12,7 @@ public final class JwtUserFactory {
                 user.getId(),
                 user.getEmail(),
                 user.getLogin(),
-                user.getLogin(),
+                user.getPassword(),
                 user.getUserStatus().equals(Status.ACTIVE),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getRoleName()))
         );

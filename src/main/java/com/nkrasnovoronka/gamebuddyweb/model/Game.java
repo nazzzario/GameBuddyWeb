@@ -28,6 +28,4 @@ public class Game extends BaseEntity {
     @JoinColumn(name = "genre_id", nullable = false)
     @JsonIgnore
     private Genre genre;
-
-
 }

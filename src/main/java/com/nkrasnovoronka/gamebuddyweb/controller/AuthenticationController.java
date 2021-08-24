@@ -1,21 +1,18 @@
 package com.nkrasnovoronka.gamebuddyweb.controller;
 
-import com.nkrasnovoronka.gamebuddyweb.dto.auth.AuthenticationRequestDto;
+import com.nkrasnovoronka.gamebuddyweb.dto.auth.AuthenticationRequest;
+import com.nkrasnovoronka.gamebuddyweb.dto.auth.AuthenticationResponse;
 import com.nkrasnovoronka.gamebuddyweb.model.user.User;
 import com.nkrasnovoronka.gamebuddyweb.security.jwt.JwtTokenProvider;
 import com.nkrasnovoronka.gamebuddyweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -37,23 +34,20 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationRequestDto authenticationRequestDto) {
+    @ResponseStatus(HttpStatus.OK)
+    public AuthenticationResponse login(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
-            String email = authenticationRequestDto.getEmail();
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, authenticationRequestDto.getPassword()));
+            String email = authenticationRequest.getEmail();
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, authenticationRequest.getPassword()));
             User byEmail = userService.findByEmail(email);
-
             if (byEmail == null) {
                 throw new UsernameNotFoundException(String.format("User with email %s not found", email));
             }
             String token = jwtTokenProvider.createToken(email, byEmail.getRole());
-
-            Map<Object, Object> response = new HashMap<>();
-            response.put("email", email);
-            response.put("token", token);
-
-            return ResponseEntity.ok(response);
-
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+            authenticationResponse.setEmail(email);
+            authenticationResponse.setToken(token);
+            return authenticationResponse;
         } catch (AuthenticationException e) {
             e.printStackTrace();
             throw new BadCredentialsException("Invalid username or password");
@@ -61,7 +55,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login")
-    public String greeting(){
+    public String greeting() {
         return "Hello";
     }
 }

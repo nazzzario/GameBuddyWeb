@@ -26,13 +26,14 @@ public class GameController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     public ResponseGame getGame(@PathVariable Long id) {
         return gameMapper.entityToResponse(gameService.get(id));
     }
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     public List<ResponseGame> getAllGame() {
         return gameService.getAll()
                 .stream()
@@ -42,6 +43,7 @@ public class GameController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseGame create(@RequestBody @Valid RequestGame requestGame) {
         Game game = gameMapper.requestGameToEntity(requestGame);
         Genre genre = genreService.get(requestGame.getGenreId());
@@ -54,12 +56,14 @@ public class GameController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void delete(@PathVariable Long id) {
         gameService.delete(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void update(@PathVariable Long id, @RequestBody @Valid RequestGame requestGame) {
         Game game = gameMapper.requestGameToEntity(requestGame);
         gameService.update(id, game);
@@ -67,6 +71,7 @@ public class GameController {
 
     @GetMapping(value = "/all", params = "genre")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
     public List<ResponseGame> getAllGamesByGenre(@RequestParam(name = "genre") String genre){
         return gameService.getAllGamesByGenre(genre)
                 .stream()
