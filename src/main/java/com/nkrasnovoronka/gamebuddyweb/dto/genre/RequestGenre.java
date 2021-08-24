@@ -7,8 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
-public class GenreDTO {
-    private Long id;
+public class RequestGenre {
     @NotBlank
     private String genreName;
 }

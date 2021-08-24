@@ -10,10 +10,8 @@ import javax.validation.constraints.Size;
 @Setter
 public class RequestUser {
     private String login;
-
     @Email
     private String email;
-
     @Size(min = 8)
     private String password;
     private String matchingPassword;

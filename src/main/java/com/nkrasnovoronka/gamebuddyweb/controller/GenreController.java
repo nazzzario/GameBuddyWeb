@@ -1,6 +1,6 @@
 package com.nkrasnovoronka.gamebuddyweb.controller;
 
-import com.nkrasnovoronka.gamebuddyweb.dto.genre.GenreDTO;
+import com.nkrasnovoronka.gamebuddyweb.dto.genre.RequestGenre;
 import com.nkrasnovoronka.gamebuddyweb.mapper.GenreMapper;
 import com.nkrasnovoronka.gamebuddyweb.model.Genre;
 import com.nkrasnovoronka.gamebuddyweb.service.GenreService;
@@ -31,11 +31,11 @@ public class GenreController {
         return genreService.getAll();
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public Genre create(@RequestBody @Valid GenreDTO genreDto) {
-        Genre genre = genreMapper.toEntity(genreDto);
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or isAnonymous()")
+    public Genre create(@RequestBody @Valid RequestGenre requestGenre) {
+        Genre genre = genreMapper.toEntity(requestGenre);
         return genreService.create(genre);
     }
 
@@ -49,8 +49,8 @@ public class GenreController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public void update(@PathVariable Long id, @RequestBody @Valid GenreDTO genreDto) {
-        Genre genre = genreMapper.toEntity(genreDto);
+    public void update(@PathVariable Long id, @RequestBody @Valid RequestGenre requestGenre) {
+        Genre genre = genreMapper.toEntity(requestGenre);
         genreService.update(id, genre);
     }
 }
