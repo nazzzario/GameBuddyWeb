@@ -49,4 +49,9 @@ public class GameServiceImpl implements GameService {
     public List<Game> getAllGamesByGenre(String genreName) {
         return gameRepository.getAllByGenreName(genreName);
     }
+
+    @Override
+    public Game getGameById(Long id) {
+        return gameRepository.findById(id).orElseThrow(RuntimeException::new);
+    }
 }

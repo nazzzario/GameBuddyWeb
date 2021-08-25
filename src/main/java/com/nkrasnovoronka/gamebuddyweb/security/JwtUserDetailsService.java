@@ -1,8 +1,6 @@
 package com.nkrasnovoronka.gamebuddyweb.security;
 
 import com.nkrasnovoronka.gamebuddyweb.model.user.User;
-import com.nkrasnovoronka.gamebuddyweb.security.jwt.JwtUser;
-import com.nkrasnovoronka.gamebuddyweb.security.jwt.JwtUserFactory;
 import com.nkrasnovoronka.gamebuddyweb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,10 +20,10 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User byEmail = userService.findByEmail(email);
-        if(byEmail == null){
+        if (byEmail == null) {
             throw new UsernameNotFoundException(String.format("User with email %s not found", email));
         }
-        JwtUser jwtUser = JwtUserFactory.create(byEmail);
-        return jwtUser;
+
+        return byEmail;
     }
 }

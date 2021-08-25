@@ -1,6 +1,7 @@
 package com.nkrasnovoronka.gamebuddyweb.controller;
 
 import com.nkrasnovoronka.gamebuddyweb.dto.user.RequestUser;
+import com.nkrasnovoronka.gamebuddyweb.dto.user.ResponseUser;
 import com.nkrasnovoronka.gamebuddyweb.mapper.UserMapper;
 import com.nkrasnovoronka.gamebuddyweb.model.user.User;
 import com.nkrasnovoronka.gamebuddyweb.service.UserService;
@@ -26,6 +27,13 @@ public class UserController {
         User registerUser = userMapper.requestUserToEntity(requestUser);
         userService.register(registerUser);
         return new RedirectView("/api/v1/auth/login");
+    }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseUser getUserById(@PathVariable Long id){
+        User byId = userService.findById(id);
+        System.out.println("byId = " + byId);
+        return userMapper.entityToResponseUser(byId);
     }
 }

@@ -5,8 +5,13 @@ import com.nkrasnovoronka.gamebuddyweb.model.BaseEntity;
 import com.nkrasnovoronka.gamebuddyweb.model.Lobby;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +19,7 @@ import java.util.Set;
 @Table(name = "users")
 @Getter
 @Setter
-public class User extends BaseEntity {
+public class User extends BaseEntity implements UserDetails, Serializable {
     @Column(nullable = false, unique = true)
     private String login;
 
@@ -24,7 +29,7 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String password;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private Set<Lobby> createdLobbies;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -39,7 +44,7 @@ public class User extends BaseEntity {
     @Column(name = "user_status")
     private Status userStatus;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public User() {
@@ -54,5 +59,35 @@ public class User extends BaseEntity {
     public void addJoinedLobbyToUser(Lobby lobby){
         joinedLobbies.add(lobby);
         lobby.addUserToLobby(this);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(role);
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
