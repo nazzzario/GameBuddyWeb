@@ -6,11 +6,13 @@ import com.nkrasnovoronka.gamebuddyweb.repository.LobbyRepository;
 import com.nkrasnovoronka.gamebuddyweb.service.LobbyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class LobbyServiceImpl implements LobbyService {
 
     private final LobbyRepository lobbyRepository;
@@ -56,5 +58,10 @@ public class LobbyServiceImpl implements LobbyService {
     public void addUserToLobby(Long lobbyId, User user) {
         Lobby byId = lobbyRepository.getById(lobbyId);
         byId.addUserToLobby(user);
+    }
+
+    @Override
+    public List<Lobby> findAllLobbiesByGameName(String gameName) {
+        return lobbyRepository.findAllByGameName(gameName);
     }
 }

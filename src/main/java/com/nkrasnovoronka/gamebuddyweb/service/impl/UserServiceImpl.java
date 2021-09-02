@@ -31,15 +31,23 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
 
-    public User register(User user) {
+    public void register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.ROLE_USER);
         user.setUserStatus(Status.ACTIVE);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override
-    @Transactional
+    public void registerAdmin(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(Role.ROLE_ADMIN);
+        user.setUserStatus(Status.ACTIVE);
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<User> getAll() {
         return userRepository.findAll();
     }

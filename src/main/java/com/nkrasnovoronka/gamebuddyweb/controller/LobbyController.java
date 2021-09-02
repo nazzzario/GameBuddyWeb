@@ -77,4 +77,14 @@ public class LobbyController {
         User byId = userService.findById(userId);
         lobbyService.addUserToLobby(lobbyId, byId);
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("isAuthenticated()")
+    public List<ResponseLobby> getLobbiesByGameName(@RequestParam("gameName") String gameName){
+        return lobbyService.findAllLobbiesByGameName(gameName)
+                .stream()
+                .map(lobbyMapper::entityToResponseLobby)
+                .collect(Collectors.toList());
+    }
 }

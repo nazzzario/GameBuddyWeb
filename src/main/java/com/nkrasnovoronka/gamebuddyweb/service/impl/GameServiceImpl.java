@@ -5,12 +5,14 @@ import com.nkrasnovoronka.gamebuddyweb.repository.GameRepository;
 import com.nkrasnovoronka.gamebuddyweb.service.GameService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
 
