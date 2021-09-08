@@ -56,11 +56,6 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         createdLobbies.add(lobby);
     }
 
-    public void addJoinedLobbyToUser(Lobby lobby){
-        joinedLobbies.add(lobby);
-        lobby.addUserToLobby(this);
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(role);

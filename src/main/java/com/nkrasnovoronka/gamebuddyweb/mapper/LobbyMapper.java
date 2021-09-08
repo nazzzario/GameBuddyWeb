@@ -14,9 +14,9 @@ public interface LobbyMapper {
     @Mapping(target = "joinedUsers", ignore = true)
     Lobby requestLobbyToEntity(RequestLobby requestLobby);
 
-//    @Mapping(target = "ownerName", source = "owner.login")
-//    @Mapping(target = "gameName", source = "game.name")
-//    @Mapping(target = "gameGenre", source = "game.genre.genreName")
+    @Mapping(target = "ownerName", source = "owner.login")
+    @Mapping(target = "gameName", source = "game.name")
+    @Mapping(target = "gameGenre", source = "game.genre.genreName")
     ResponseLobby entityToResponseLobby(Lobby lobby);
 
 }

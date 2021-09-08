@@ -21,7 +21,7 @@ public class Lobby extends BaseEntity {
     @JoinColumn(name = "owner_id")
     private User owner;
 
-    @ManyToMany(mappedBy = "joinedLobbies", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<User> joinedUsers;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -35,10 +35,5 @@ public class Lobby extends BaseEntity {
 
     public Lobby() {
         joinedUsers = new HashSet<>();
-    }
-
-    public void addUserToLobby(User user){
-        joinedUsers.add(user);
-        user.addJoinedLobbyToUser(this);
     }
 }

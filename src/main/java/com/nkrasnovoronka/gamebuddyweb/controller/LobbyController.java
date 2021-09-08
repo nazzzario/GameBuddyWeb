@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/lobby")
 @AllArgsConstructor
 public class LobbyController {
+
     private final LobbyService lobbyService;
     private final UserService userService;
     private final GameService gameService;
@@ -74,8 +75,8 @@ public class LobbyController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
     public void joinLobby(@PathVariable("lobby_id") Long lobbyId, @PathVariable("user_id") Long userId){
-        User byId = userService.findById(userId);
-        lobbyService.addUserToLobby(lobbyId, byId);
+        User user = userService.findById(userId);
+        lobbyService.addUserToLobby(lobbyId, user);
     }
 
     @GetMapping

@@ -55,9 +55,12 @@ public class LobbyServiceImpl implements LobbyService {
     }
 
     @Override
+    @Transactional
     public void addUserToLobby(Long lobbyId, User user) {
         Lobby byId = lobbyRepository.getById(lobbyId);
-        byId.addUserToLobby(user);
+        byId.getJoinedUsers().add(user);
+        lobbyRepository.save(byId);
+
     }
 
     @Override

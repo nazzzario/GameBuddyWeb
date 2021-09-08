@@ -6,7 +6,7 @@ spring:
         - local-dev
         - debug
   jpa:
-    open-in-view: false
+    open-in-view: true
 server:
   error:
     include-message: always
