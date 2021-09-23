@@ -5,6 +5,8 @@ import com.nkrasnovoronka.gamebuddyweb.dto.auth.AuthenticationResponse;
 import com.nkrasnovoronka.gamebuddyweb.model.user.User;
 import com.nkrasnovoronka.gamebuddyweb.security.jwt.JwtTokenProvider;
 import com.nkrasnovoronka.gamebuddyweb.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 public class AuthenticationController {
 
+    private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
@@ -36,6 +39,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public AuthenticationResponse login(@RequestBody AuthenticationRequest authenticationRequest) {
+        logger.info("User {} try authenticate", authenticationRequest.getEmail());
         try {
             String email = authenticationRequest.getEmail();
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, authenticationRequest.getPassword()));
@@ -47,9 +51,9 @@ public class AuthenticationController {
             AuthenticationResponse authenticationResponse = new AuthenticationResponse();
             authenticationResponse.setEmail(email);
             authenticationResponse.setToken(token);
+            logger.info("User {} login into system", authenticationRequest.getEmail());
             return authenticationResponse;
         } catch (AuthenticationException e) {
-            e.printStackTrace();
             throw new BadCredentialsException("Invalid username or password");
         }
     }

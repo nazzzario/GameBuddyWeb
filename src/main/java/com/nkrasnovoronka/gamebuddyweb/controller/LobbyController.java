@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/lobby")
 @AllArgsConstructor
 public class LobbyController {
-
     private final LobbyService lobbyService;
     private final UserService userService;
     private final GameService gameService;

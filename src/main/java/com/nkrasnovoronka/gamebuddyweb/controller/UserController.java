@@ -33,7 +33,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseUser getUserById(@PathVariable Long id){
         User byId = userService.findById(id);
-        System.out.println("byId = " + byId);
         return userMapper.entityToResponseUser(byId);
     }
 }

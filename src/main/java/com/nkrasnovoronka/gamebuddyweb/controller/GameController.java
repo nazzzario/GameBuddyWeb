@@ -8,6 +8,8 @@ import com.nkrasnovoronka.gamebuddyweb.model.Genre;
 import com.nkrasnovoronka.gamebuddyweb.service.GameService;
 import com.nkrasnovoronka.gamebuddyweb.service.GenreService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/game")
 @AllArgsConstructor
 public class GameController {
+    private final Logger logger = LoggerFactory.getLogger(GameController.class);
     private final GameService gameService;
     private final GenreService genreService;
     private final GameMapper gameMapper;
@@ -28,6 +31,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
     public ResponseGame getGame(@PathVariable Long id) {
+        logger.info("Getting game with id {}", id);
         return gameMapper.entityToResponse(gameService.get(id));
     }
 
@@ -35,6 +39,7 @@ public class GameController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
     public List<ResponseGame> getAllGame() {
+        logger.info("Getting all games");
         return gameService.getAll()
                 .stream()
                 .map(gameMapper::entityToResponse)
@@ -45,11 +50,13 @@ public class GameController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseGame create(@RequestBody @Valid RequestGame requestGame) {
+        logger.info("Creating new game");
         Game game = gameMapper.requestGameToEntity(requestGame);
         Genre genre = genreService.get(requestGame.getGenreId());
         if (genre != null) {
             game.setGenre(genre);
         }
+
         gameService.create(game);
         return gameMapper.entityToResponse(game);
     }
@@ -72,7 +79,7 @@ public class GameController {
     @GetMapping(value = "/all", params = "genre")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public List<ResponseGame> getAllGamesByGenre(@RequestParam(name = "genre") String genre){
+    public List<ResponseGame> getAllGamesByGenre(@RequestParam(name = "genre") String genre) {
         return gameService.getAllGamesByGenre(genre)
                 .stream()
                 .map(gameMapper::entityToResponse)

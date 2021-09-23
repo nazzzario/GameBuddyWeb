@@ -13,6 +13,7 @@ server:
     include-binding-errors: always
 springdoc:
   show-actuator: true
+
 management:
   endpoint:
     health:
