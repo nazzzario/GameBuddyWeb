@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -28,11 +27,8 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public void update(Long id, Genre updated) {
-        Optional<Genre> byId = genreRepository.findById(id);
-        if (byId.isPresent()) {
-            Genre genre = byId.get();
-            genre.setGenreName(updated.getGenreName());
-        }
+        Genre genre = genreRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        genre.setGenreName(updated.getGenreName());
     }
 
     @Override
@@ -42,7 +38,7 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public Genre get(Long id) {
-        return genreRepository.getById(id);
+        return genreRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
