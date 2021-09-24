@@ -9,8 +9,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface GameMapper {
 
-    @Mapping(target = "lobby", ignore = true)
     @Mapping(target = "genre", ignore = true)
+    @Mapping(target = "lobby", ignore = true)
     Game requestGameToEntity(RequestGame requestGame);
 
     @Mapping(target = "genre", source = "genre.genreName")

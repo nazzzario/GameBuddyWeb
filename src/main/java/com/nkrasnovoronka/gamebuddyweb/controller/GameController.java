@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -32,7 +33,14 @@ public class GameController {
     @PreAuthorize("isAuthenticated()")
     public ResponseGame getGame(@PathVariable Long id) {
         logger.info("Getting game with id {}", id);
-        return gameMapper.entityToResponse(gameService.get(id));
+        try {
+            Game game = gameService.get(id);
+            return gameMapper.entityToResponse(game);
+        } catch (IllegalArgumentException e) {
+            logger.error("Cannot get game with id {}", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot found game with id " + id, e);
+        }
+
     }
 
     @GetMapping("/all")
@@ -50,13 +58,10 @@ public class GameController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseGame create(@RequestBody @Valid RequestGame requestGame) {
-        logger.info("Creating new game");
+        logger.info("Creating new game with name {}", requestGame.getName());
         Game game = gameMapper.requestGameToEntity(requestGame);
         Genre genre = genreService.get(requestGame.getGenreId());
-        if (genre != null) {
-            game.setGenre(genre);
-        }
-
+        game.setGenre(genre);
         gameService.create(game);
         return gameMapper.entityToResponse(game);
     }
@@ -65,21 +70,36 @@ public class GameController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void delete(@PathVariable Long id) {
-        gameService.delete(id);
+        logger.info("Deleting game with id {}", id);
+        try {
+            gameService.delete(id);
+        } catch (IllegalArgumentException e) {
+            logger.error("Cannot get game with id {}", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot found game with id " + id, e);
+        }
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void update(@PathVariable Long id, @RequestBody @Valid RequestGame requestGame) {
+        logger.info("Updating game with id {}", id);
+        Genre genre = genreService.get(requestGame.getGenreId());
         Game game = gameMapper.requestGameToEntity(requestGame);
-        gameService.update(id, game);
+        game.setGenre(genre);
+        try {
+            gameService.update(id, game);
+        } catch (IllegalArgumentException e) {
+            logger.error("Cannot get game with id {}", id);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot found game with id " + id, e);
+        }
     }
 
     @GetMapping(value = "/all", params = "genre")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
     public List<ResponseGame> getAllGamesByGenre(@RequestParam(name = "genre") String genre) {
+        logger.info("Getting all games with genre {}", genre);
         return gameService.getAllGamesByGenre(genre)
                 .stream()
                 .map(gameMapper::entityToResponse)
