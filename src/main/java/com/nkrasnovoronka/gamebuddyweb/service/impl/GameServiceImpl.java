@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -23,13 +22,10 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void update(Long id, Game updated) {
-        Optional<Game> byId = gameRepository.findById(id);
-        if (byId.isPresent()) {
-            Game game = byId.get();
-            game.setGameLogo(updated.getGameLogo());
-            game.setGenre(updated.getGenre());
-            game.setName(updated.getName());
-        }
+        Game game = gameRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        game.setGameLogo(updated.getGameLogo());
+        game.setGenre(updated.getGenre());
+        game.setName(updated.getName());
     }
 
     @Override
@@ -39,21 +35,23 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game get(Long id) {
-        return gameRepository.getById(id);
+        return gameRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Game> getAll() {
         return gameRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Game> getAllGamesByGenre(String genreName) {
         return gameRepository.getAllByGenreName(genreName);
     }
 
     @Override
     public Game getGameById(Long id) {
-        return gameRepository.findById(id).orElseThrow(RuntimeException::new);
+        return gameRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 }
