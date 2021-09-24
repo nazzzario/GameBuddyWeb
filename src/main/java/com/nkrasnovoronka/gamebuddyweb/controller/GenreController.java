@@ -26,12 +26,14 @@ public class GenreController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Genre getGenre(@PathVariable Long id) {
+        logger.info("Getting genre with id {}", id);
         return genreService.get(id);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Genre> getAllGenre() {
+        logger.info("Getting all genres");
         return genreService.getAll();
     }
 
@@ -63,7 +65,7 @@ public class GenreController {
     public void update(@PathVariable Long id, @RequestBody @Valid RequestGenre requestGenre) {
         logger.info("Updating genre with id {}", id);
         Genre genre = genreMapper.toEntity(requestGenre);
-        try{
+        try {
             genreService.update(id, genre);
         } catch (IllegalArgumentException e) {
             logger.error("Cannot get genre with id {}", id);
