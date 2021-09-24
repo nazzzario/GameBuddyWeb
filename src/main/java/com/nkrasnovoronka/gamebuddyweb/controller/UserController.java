@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/v1/user")
 @AllArgsConstructor
@@ -25,7 +27,7 @@ public class UserController {
 
     @PostMapping("/registration")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Object> registration(@RequestBody RequestUser requestUser) {
+    public ResponseEntity<Object> registration(@RequestBody @Valid RequestUser requestUser) {
         logger.info("Registration new user with email {}", requestUser.getEmail());
         if (!requestUser.getPassword().equals(requestUser.getMatchingPassword())) {
             logger.warn("User {} password didn`t match", requestUser.getEmail());
@@ -47,6 +49,7 @@ public class UserController {
             User byId = userService.findById(id);
             return userMapper.entityToResponseUser(byId);
         }catch (IllegalArgumentException e){
+            logger.error("Cannot get user with id {}", id);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot found user with id " + id, e);
         }
     }

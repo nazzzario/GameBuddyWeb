@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/admin")
@@ -22,7 +24,7 @@ public class AdminController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_SUPERUSER')")
-    public void registerAdmin(@RequestBody RequestUser requestUser) {
+    public void registerAdmin(@RequestBody @Valid RequestUser requestUser) {
         logger.info("Crating new admin ");
         User user = userMapper.requestUserToEntity(requestUser);
         userService.registerAdmin(user);

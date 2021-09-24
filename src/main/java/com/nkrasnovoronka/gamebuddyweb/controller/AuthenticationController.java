@@ -57,9 +57,4 @@ public class AuthenticationController {
             throw new BadCredentialsException("Invalid username or password");
         }
     }
-
-    @GetMapping("/login")
-    public String greeting() {
-        return "Hello";
-    }
 }

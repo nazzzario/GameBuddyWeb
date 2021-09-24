@@ -12,7 +12,7 @@ public class RequestUser {
     private String login;
     @Email
     private String email;
-    @Size(min = 8, message = "Password mist contain at leas 8 symbols")
+    @Size(min = 8, message = "Password must contain at leas 8 symbols")
     private String password;
     private String matchingPassword;
 }
