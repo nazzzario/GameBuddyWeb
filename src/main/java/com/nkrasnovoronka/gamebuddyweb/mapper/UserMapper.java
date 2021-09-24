@@ -10,7 +10,6 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
     @Mapping(target = "userStatus", ignore = true)
     @Mapping(target = "role", ignore = true)
-    @Mapping(target = "joinedLobbies", ignore = true)
     @Mapping(target = "createdLobbies", ignore = true)
     User requestUserToEntity(RequestUser requestUser);
 

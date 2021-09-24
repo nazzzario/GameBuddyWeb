@@ -26,19 +26,11 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String password;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private Set<Lobby> createdLobbies;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_joined_lobbies",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "lobby_id")
-    )
-    private Set<Lobby> joinedLobbies;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
@@ -49,11 +41,6 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     public User() {
         createdLobbies = new HashSet<>();
-        joinedLobbies = new HashSet<>();
-    }
-
-    public void addCreatedLobbyToUser(Lobby lobby){
-        createdLobbies.add(lobby);
     }
 
     @Override

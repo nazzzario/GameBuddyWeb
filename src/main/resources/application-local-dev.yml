@@ -2,9 +2,12 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/game_buddy
-    username: root
+    username: postgres
     password: root
   jpa:
     show-sql: true
-    hibernate:
-      ddl-auto: validate
+#    hibernate:
+#      ddl-auto: create
+  flyway:
+    baseline-on-migrate: true
+    create-schemas: true
