@@ -5,7 +5,7 @@ import com.nkrasnovoronka.gamebuddyweb.model.user.User;
 
 import java.util.List;
 
-public interface LobbyService extends CrudService<Lobby, Long>{
+public interface LobbyService extends CrudService<Lobby, Long> {
 
     void addUserToLobby(Long lobbyId, User user);
 

@@ -46,7 +46,7 @@ public class LobbyController {
     @PutMapping("/{owner_id}/edit/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ROLE_ADMIN') or authentication.principal.id == #ownerId")
-    public void updateLobby(@PathVariable Long id, @PathVariable("owner_id") Long ownerId, @RequestBody RequestLobby requestLobby){
+    public void updateLobby(@PathVariable Long id, @PathVariable("owner_id") Long ownerId, @RequestBody RequestLobby requestLobby) {
         Game gameById = gameService.getGameById(requestLobby.getGameId());
         Lobby lobby = lobbyMapper.requestLobbyToEntity(requestLobby);
         lobby.setGame(gameById);
@@ -63,7 +63,7 @@ public class LobbyController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public List<ResponseLobby> getAllLobbies(){
+    public List<ResponseLobby> getAllLobbies() {
         return lobbyService.getAll()
                 .stream()
                 .map(lobbyMapper::entityToResponseLobby)
@@ -73,7 +73,7 @@ public class LobbyController {
     @GetMapping("/{lobby_id}/join/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public void joinLobby(@PathVariable("lobby_id") Long lobbyId, @PathVariable("user_id") Long userId){
+    public void joinLobby(@PathVariable("lobby_id") Long lobbyId, @PathVariable("user_id") Long userId) {
         User user = userService.findById(userId);
         lobbyService.addUserToLobby(lobbyId, user);
     }
@@ -81,7 +81,7 @@ public class LobbyController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("isAuthenticated()")
-    public List<ResponseLobby> getLobbiesByGameName(@RequestParam("gameName") String gameName){
+    public List<ResponseLobby> getLobbiesByGameName(@RequestParam("gameName") String gameName) {
         return lobbyService.findAllLobbiesByGameName(gameName)
                 .stream()
                 .map(lobbyMapper::entityToResponseLobby)

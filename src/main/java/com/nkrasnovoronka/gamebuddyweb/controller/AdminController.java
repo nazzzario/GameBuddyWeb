@@ -21,7 +21,7 @@ public class AdminController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_SUPERUSER')")
     public void registerAdmin(@RequestBody RequestUser requestUser) {
         logger.info("Crating new admin ");
         User user = userMapper.requestUserToEntity(requestUser);
