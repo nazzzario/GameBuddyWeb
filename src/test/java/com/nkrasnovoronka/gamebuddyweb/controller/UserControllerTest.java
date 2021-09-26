@@ -2,6 +2,7 @@ package com.nkrasnovoronka.gamebuddyweb.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nkrasnovoronka.gamebuddyweb.dto.user.RequestUser;
+import com.nkrasnovoronka.gamebuddyweb.dto.user.ResponseUser;
 import com.nkrasnovoronka.gamebuddyweb.mapper.UserMapper;
 import com.nkrasnovoronka.gamebuddyweb.model.user.User;
 import com.nkrasnovoronka.gamebuddyweb.service.UserService;
@@ -107,7 +108,7 @@ class UserControllerTest {
 
     @Test
     void getUserById() throws Exception {
-        doNothing().when(userService).findById(anyLong());
+        when(userService.findById(anyLong())).thenReturn(any(User.class));
 
         MockHttpServletResponse response = mockMvc.perform(get(USER_CONTROLLER_URL + "/1"))
                 .andReturn().getResponse();
