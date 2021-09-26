@@ -44,14 +44,14 @@ class GameServiceTest {
     }
 
     @Test
-    void createGenreTest() {
+    void createGameTest() {
         when(gameRepository.save(game)).thenReturn(game);
         Game game = gameService.create(this.game);
         assertEquals(this.game, game);
     }
 
     @Test
-    void updateGenreTest(){
+    void updateGameTest(){
         when(gameRepository.findById(anyLong())).thenReturn(Optional.of(game));
         Game updated = new Game();
         updated.setGenre(new Genre());
@@ -63,20 +63,20 @@ class GameServiceTest {
     }
 
     @Test
-    void deleteGenreTest(){
+    void deleteGameTest(){
         gameService.delete(1L);
         verify(gameRepository).deleteById(anyLong());
     }
 
     @Test
-    void getGenreTest(){
+    void getGameTest(){
         when(gameRepository.findById(anyLong())).thenReturn(Optional.of(game));
         Game get = gameService.get(1L);
         assertEquals(this.game, get);
     }
 
     @Test
-    void getAllGenreTest(){
+    void getAllGameTest(){
         when(gameRepository.findAll()).thenReturn(List.of(new Game()));
         List<Game> all = gameService.getAll();
         assertFalse(all.isEmpty());
