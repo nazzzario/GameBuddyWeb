@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("isAuthenticated() AND hasRole('ROLE_USER')")
+    @PreAuthorize("isAuthenticated() AND hasAnyRole({'ROLE_USER', 'ROLE_ADMIN'})")
     public ResponseUser getUserById(@PathVariable Long id) {
         logger.info("Getting user with id {}", id);
         try {

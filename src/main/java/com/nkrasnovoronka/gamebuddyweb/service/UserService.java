@@ -5,7 +5,7 @@ import com.nkrasnovoronka.gamebuddyweb.model.user.User;
 import java.util.List;
 
 public interface UserService {
-    void register(User user);
+    User register(User user);
 
     void registerAdmin(User user);
 

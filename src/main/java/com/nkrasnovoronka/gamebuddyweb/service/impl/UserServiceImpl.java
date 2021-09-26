@@ -31,11 +31,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
 
-    public void register(User user) {
+    public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.ROLE_USER);
         user.setUserStatus(Status.ACTIVE);
         userRepository.save(user);
+        return user;
     }
 
     @Override
