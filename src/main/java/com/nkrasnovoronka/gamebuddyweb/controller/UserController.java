@@ -31,7 +31,7 @@ public class UserController {
         logger.info("Registration new user with email {}", requestUser.getEmail());
         if (!requestUser.getPassword().equals(requestUser.getMatchingPassword())) {
             logger.warn("User {} password didn`t match", requestUser.getEmail());
-           return new ResponseEntity<>("Password didnt match", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Password didnt match", HttpStatus.FORBIDDEN);
         }
         User registerUser = userMapper.requestUserToEntity(requestUser);
         userService.register(registerUser);
@@ -48,7 +48,7 @@ public class UserController {
         try {
             User byId = userService.findById(id);
             return userMapper.entityToResponseUser(byId);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             logger.error("Cannot get user with id {}", id);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot found user with id " + id, e);
         }

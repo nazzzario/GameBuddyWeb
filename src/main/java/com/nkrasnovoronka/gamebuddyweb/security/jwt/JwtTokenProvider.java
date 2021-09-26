@@ -18,8 +18,8 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final UserDetailsService userDetailsService;
-    private String secret = "gamebuddy";
     private final long validInMilliseconds = 3600000;
+    private String secret = "gamebuddy";
 
     @Autowired
     public JwtTokenProvider(UserDetailsService userDetailsService) {
