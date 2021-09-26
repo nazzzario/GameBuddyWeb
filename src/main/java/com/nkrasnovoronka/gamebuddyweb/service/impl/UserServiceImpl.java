@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.ROLE_USER);
